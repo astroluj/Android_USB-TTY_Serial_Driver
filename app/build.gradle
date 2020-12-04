@@ -1,0 +1,80 @@
+apply plugin: 'com.android.library'
+
+// https://github.com/mik3y/usb-serial-for-android
+android {
+    compileSdkVersion 30
+    buildToolsVersion '30.0.1'
+
+    defaultConfig {
+        minSdkVersion 17
+        targetSdkVersion 30
+        consumerProguardFiles 'proguard-rules.pro'
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunnerArguments = [                    // Raspi   Windows   LinuxVM   ...
+                                                                  'rfc2217_server_host': '192.168.0.100',
+                                                                  'rfc2217_server_nonstandard_baudrates': 'true',   // true    false     false
+        ]
+        archivesBaseName = "SerialDriver"
+        // NDK set
+        ndk {
+            moduleName "libserial_port"
+            abiFilters 'armeabi-v7a', 'arm64-v8a'
+        }
+    }
+
+    android.libraryVariants.all { variant ->
+        variant.outputs.all { output ->
+            outputFileName = "${archivesBaseName}.aar"
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.txt"
+        }
+    }
+
+    // Jni Setting
+    sourceSets.main {
+        // Android.mk와 Applicaton.mk를 자동 생성하지 않도록 소스 경로를 설정하지 않습니다.
+        // JNI Source 경로를 설정하면 안드로이드 스튜디오의 Native Library Build가 진행되고
+        // Android.mk와 Application.mk 파일이 자동으로 생성 됩니다..
+        jni.srcDirs = [] // This prevents the auto generation of Android.mk
+        //Compile된 Native Library가 저장될 경로
+        jniLibs.srcDirs 'src/main/jniLibs'
+        //또는 jniLibs.srcDir 'src/main/libs'
+    }
+    task buildNative(type: Exec) {
+        Properties properties = new Properties()
+        properties.load(project.rootProject.file('local.properties').newDataInputStream())
+        def command = properties.getProperty('ndk.dir', null) + "\\ndk-build.cmd"
+        commandLine command, '-C', file('src/main/jni').absolutePath, "NDK_LIBS_OUT=../jniLibs"
+    }
+    task cleanNative(type: Exec, description: 'Clean JNI object files') {
+        def ndkDir = project.android.ndkDirectory.absolutePath
+        commandLine "$ndkDir/ndk-build.cmd",
+                '-C', file('src/main/jni').absolutePath, // Change src/main/jni the relative path to your jni source
+                'clean'
+    }
+
+    clean.dependsOn 'cleanNative'
+
+    tasks.withType(JavaCompile) {
+        compileTask -> compileTask.dependsOn buildNative
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+//apply from: 'publishToMavenLocal.gradle'
+
+//apply from: 'coverage.gradle'
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+}
