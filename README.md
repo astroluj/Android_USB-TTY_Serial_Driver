@@ -120,7 +120,7 @@ https://github.com/cepr/android-serialport-api<br>
 <code><pre>
 /***********************************Default Serial***********************************/
 // Serial 통신 callback init
-private var serialIOCallback = object : SerialInputOutputManager.Listener {
+private var serialIOCallback = object : SerialInputOutputListener {
     // 통신 준비 완료
     override fun onReadyRun() {
     }
