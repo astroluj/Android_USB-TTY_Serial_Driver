@@ -14,7 +14,7 @@
  * limitations under the License. 
  */
 
-package com.android.serial.ttyserial;
+package com.astroluj.serial.ttyserial;
 
 import android.util.Log;
 

@@ -7,7 +7,7 @@
  * Project home page: https://github.com/mik3y/usb-serial-for-android
  */
 
-package com.android.serial.usbserial.driver;
+package com.astroluj.serial.usbserial.driver;
 
 import android.hardware.usb.UsbConstants;
 import android.hardware.usb.UsbDevice;
