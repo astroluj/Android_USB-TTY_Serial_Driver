@@ -3,7 +3,7 @@ USB 연결 및 TTY 연결 드라이버 모듈
 
 https://github.com/mik3y/usb-serial-for-android<br>
 https://github.com/cepr/android-serialport-api<br>
-통합 드라이버
+를 이용하여 만든 통합 드라이버
 
 <p><p>
 <h2> example<br></h2>
