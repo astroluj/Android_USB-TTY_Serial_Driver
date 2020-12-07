@@ -1,2 +1,2 @@
 include ':app'
-rootProject.name = "SerialDriver"
+rootProject.name = "Android_SerialDriver"
