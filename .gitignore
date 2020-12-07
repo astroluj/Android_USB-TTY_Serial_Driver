@@ -3,7 +3,7 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=android,androidstudio,kotlin
 
 ### Android ###
-*.so
+#*.so
 *.o
 # Built application files
 *.apk
