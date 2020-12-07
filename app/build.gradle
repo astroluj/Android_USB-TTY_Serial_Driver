@@ -61,11 +61,11 @@ android {
                 'clean'
     }
 
-    clean.dependsOn 'cleanNative'
+    /*clean.dependsOn 'cleanNative'
 
     tasks.withType(JavaCompile) {
         compileTask -> compileTask.dependsOn buildNative
-    }
+    }*/
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
