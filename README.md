@@ -184,7 +184,7 @@ allprojects {
 Application build.gradle
 <code><pre>
 dependencies {
-	implementation 'com.github.astroluj:Android_USB-TTY_Serial_Driver:1.0.0'
+	implementation 'com.github.astroluj:Android_USB-TTY_Serial_Driver:1.0.2'
 }
 </pre></code>
 
