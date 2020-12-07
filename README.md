@@ -171,6 +171,23 @@ private var serialIOCallback = object : SerialInputOutputManager.Listener {
 </code></pre>
 <p><p>
 
+<h2>Dependency<br></h2>
+Project build.gradle
+<code><pre>
+allprojects {
+	repositories {
+		...
+		maven { url 'https://jitpack.io' }
+	}
+}
+</pre></code>
+Application build.gradle
+<code><pre>
+dependencies {
+	implementation 'com.github.astroluj:Android_USB-TTY_Serial_Driver:1.0.0'
+}
+</pre></code>
+
 <h2>License</h2><br>
 <p style="font-size:x-large">
 		<a href="https://github.com/mik3y/usb-serial-for-android">
