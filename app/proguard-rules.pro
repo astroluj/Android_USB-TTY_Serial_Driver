@@ -20,3 +20,8 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 -keep class com.astroluj.serial.** { public protected *; }
+# 줄번호 유지
+-renamesourcefileattribute astroluj.serial
+-keepattributes SourceFile, LineNumberTable, Signature, Exceptions, *Annotation*, InnerClasses, EnclosingMethod
+# variable names
+-keepparameternames
