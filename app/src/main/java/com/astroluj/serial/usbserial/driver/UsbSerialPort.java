@@ -103,7 +103,7 @@ public interface UsbSerialPort extends Closeable {
      * {@link #close()} is eventually called.
      *
      * @param connection an open device connection, acquired with
-     *                   {@link UsbManager#openDevice(android.hardware.usb.UsbDevice)}
+     *                   {@link UsbManager#openDevice(UsbDevice)}
      * @throws IOException on error opening or initializing the port.
      */
     public void open(UsbDeviceConnection connection) throws IOException;
