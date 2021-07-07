@@ -201,4 +201,9 @@ dependencies {
 		<a href="http://www.apache.org/licenses/LICENSE-2.0">
 				Apache 2.0 License
 		</a>
+		<br>
+		License :
+		<a href="https://opensource.org/licenses/MIT">
+				MIT License
+		</a>
 </p>
