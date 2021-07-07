@@ -59,6 +59,7 @@ public class Cp21xxSerialDriver implements UsbSerialDriver {
          */
         private static final int SILABSER_IFC_ENABLE_REQUEST_CODE = 0x00;
         private static final int SILABSER_SET_LINE_CTL_REQUEST_CODE = 0x03;
+        private static final int SILABSER_SET_BREAK_REQUEST_CODE = 0x05;
         private static final int SILABSER_SET_MHS_REQUEST_CODE = 0x07;
         private static final int SILABSER_SET_BAUDRATE = 0x1E;
         private static final int SILABSER_FLUSH_REQUEST_CODE = 0x12;
@@ -174,7 +175,7 @@ public class Cp21xxSerialDriver implements UsbSerialDriver {
         }
 
         @Override
-        public void setParameters(int baudRate, int dataBits, int stopBits, int parity) throws IOException {
+        public void setParameters(int baudRate, int dataBits, int stopBits, @Parity int parity) throws IOException {
             if(baudRate <= 0) {
                 throw new IllegalArgumentException("Invalid baud rate: " + baudRate);
             }
@@ -314,10 +315,14 @@ public class Cp21xxSerialDriver implements UsbSerialDriver {
             }
         }
 
+        @Override
+        public void setBreak(boolean value) throws IOException {
+            setConfigSingle(SILABSER_SET_BREAK_REQUEST_CODE, value ? 1 : 0);
+        }
     }
 
     public static Map<Integer, int[]> getSupportedDevices() {
-        final Map<Integer, int[]> supportedDevices = new LinkedHashMap<Integer, int[]>();
+        final Map<Integer, int[]> supportedDevices = new LinkedHashMap<>();
         supportedDevices.put(UsbId.VENDOR_SILABS,
                 new int[] {
             UsbId.SILABS_CP2102, // same ID for CP2101, CP2103, CP2104, CP2109
