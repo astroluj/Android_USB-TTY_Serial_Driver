@@ -19,9 +19,24 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
--keep class com.astroluj.serial.** { public protected *; }
+#noinspection ShrinkerUnresolvedReference
+
 # 줄번호 유지
 -renamesourcefileattribute astroluj.serial
 -keepattributes SourceFile, LineNumberTable, Signature, Exceptions, *Annotation*, InnerClasses, EnclosingMethod
 # variable names
 -keepparameternames
+
+# JNI methods
+-keepclassmembers public class com.astroluj.serial.ttyserial.SerialPort { public protected private native <methods>; }
+# keep private Activity activity
+-keepclassmembers public class com.astroluj.serial.ttyserial.SerialPort { private java.io.FileDescriptor mFd ; }
+# Static
+-keepclassmembers public class com.astroluj.serial.** { public protected private static <fields> ; public static <methods>; }
+
+# All
+-keep class com.astroluj.serial.** { public protected *; }
+
+#keep package name
+-keep class com.astroluj.serial.** { public * ; }
+-keep interface com.astroluj.serial.** { public * ; }
