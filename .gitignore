@@ -3,6 +3,9 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=android,androidstudio,kotlin
 
 ### Android ###
+# dev info
+app/developer.properties
+
 #*.so
 app/src/main/jni/
 app/src/main/obj/*
