@@ -174,17 +174,24 @@ private var serialIOCallback = object : SerialInputOutputListener {
 <h2>Dependency<br></h2>
 Project build.gradle
 <code><pre>
-allprojects {
-	repositories {
-		...
-		maven { url 'https://jitpack.io' }
-	}
+repositories {
+    maven {
+        name = "GitHubPackages"
+        url = uri("https://maven.pkg.github.com/astroluj/Android_USB-TTY_Serial_Driver")
+        credentials {
+            username = "astroluj"
+            password = "ghp_akUBZp
+	    JUgYbhaf0Hr5V3K
+	    OcuHySPVD4GhlAV" 
+        }
+    }
 }
+
 </pre></code>
 Application build.gradle
 <code><pre>
 dependencies {
-	implementation 'com.github.astroluj:Android_USB-TTY_Serial_Driver:1.0.10'
+	implementation 'com.github.astroluj:Android_SerialDriver:1.0.11'
 }
 </pre></code>
 
