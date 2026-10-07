@@ -182,7 +182,7 @@ repositories {
 Application build.gradle
 <code><pre>
 dependencies {
-	implementation 'com.github.astroluj:android_serialdriver:1.0.12'
+	implementation 'com.github.astroluj:android_serialdriver:1.0.18'
 }
 </pre></code>
 
