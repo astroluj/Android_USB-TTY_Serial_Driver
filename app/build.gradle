@@ -89,7 +89,7 @@ android {
         jniLibs.srcDirs 'src/main/jniLibs'
         //또는 jniLibs.srcDir 'src/main/libs'
     }
-    task buildNative(type: Exec) {
+    /*task buildNative(type: Exec) {
         Properties properties = new Properties()
         properties.load(project.rootProject.file('local.properties').newDataInputStream())
         def command = properties.getProperty('ndk.dir', null) + "\\ndk-build.cmd"
@@ -108,7 +108,7 @@ android {
 
     tasks.withType(JavaCompile) {
         compileTask -> compileTask.dependsOn buildNative
-    }
+    }*/
 
     /*compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -139,7 +139,7 @@ afterEvaluate {
 
                 groupId = 'com.github.astroluj'
                 artifactId = 'Android_USB-TTY_Serial_Driver'
-                version = '1.0.17'
+                version = '1.0.18'
             }
         }
     }
