@@ -1,20 +1,17 @@
 plugins {
     id 'com.android.library'
-/*apply plugin: 'com.github.dcendents.android-maven'
-group = 'com.github.astroluj'*/
-// apply from: file('publish.gradle')
     id 'maven-publish'
 }
 group = 'com.github.astroluj'
 
 android {
-    compileSdkVersion 33
-    buildToolsVersion '30.0.3'
+    namespace 'com.astroluj.serial'
+    ndkVersion '30.0.16248370'
+    compileSdk 37
 
     //File 불러오기
     def versionPropsFile = file('version.properties')
 
-    def artifactName = "Android_SerialDriver"
     def versionMajor = 0
     def versionMinor = 0
     def versionPatch = 0
@@ -50,33 +47,35 @@ android {
         versionProps.store(versionPropsFile.newWriter(), null)
 
         defaultConfig {
-            minSdkVersion 17
-            targetSdkVersion 33
+            minSdk 24
+            targetSdk 37
             versionCode versionNumber
-            versionName "${versionMajor}.${versionMinor}.${versionPatch}_Release"
-            archivesBaseName = artifactName
-            consumerProguardFiles 'proguard-rules.pro'
+            versionName "${versionMajor}.${versionMinor}.${versionPatch}"
+            //consumerProguardFiles 'proguard-rules.pro'
 
             testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
             testInstrumentationRunnerArguments = [                    // Raspi   Windows   LinuxVM   ...
                                                                       'rfc2217_server_host'                 : '192.168.0.100',
                                                                       'rfc2217_server_nonstandard_baudrates': 'true',   // true    false     false
             ]
-            // NDK set
-            ndk {
-                moduleName "libserial_port"
-                abiFilters 'armeabi-v7a', 'arm64-v8a'
-            }
         }
-        android.libraryVariants.all { variant -> variant.outputs.all { output -> outputFileName = "${archivesBaseName}-${android.defaultConfig.versionName}.aar" } }
     } else {
         throw new Exception("Could not read version.properties!")
     }
 
+    buildFeatures {
+        buildConfig = true
+    }
     buildTypes {
         release {
             minifyEnabled true
-            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+        }
+    }
+
+    publishing {
+        singleVariant("release") {
+            withSourcesJar() // 선택 사항: 소스 코드 포함하여 배포
         }
     }
 
@@ -90,29 +89,35 @@ android {
         jniLibs.srcDirs 'src/main/jniLibs'
         //또는 jniLibs.srcDir 'src/main/libs'
     }
-    /*task buildNative(type: Exec) {
+    task buildNative(type: Exec) {
         Properties properties = new Properties()
         properties.load(project.rootProject.file('local.properties').newDataInputStream())
         def command = properties.getProperty('ndk.dir', null) + "\\ndk-build.cmd"
         commandLine command, '-C', file('src/main/jni').absolutePath, "NDK_LIBS_OUT=../jniLibs"
     }
     task cleanNative(type: Exec, description: 'Clean JNI object files') {
-        def ndkDir = project.android.ndkDirectory.absolutePath
-        commandLine "$ndkDir/ndk-build.cmd",
+        Properties properties = new Properties()
+        properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+        commandLine "${properties.getProperty('ndk.dir', null)}/ndk-build.cmd",
                 '-C', file('src/main/jni').absolutePath, // Change src/main/jni the relative path to your jni source
                 'clean'
-    }*/
+    }
 
-    /*clean.dependsOn 'cleanNative'
+    clean.dependsOn 'cleanNative'
 
     tasks.withType(JavaCompile) {
         compileTask -> compileTask.dependsOn buildNative
-    }*/
+    }
 
-    compileOptions {
+    /*compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
-    }
+    }*/
+}
+
+base {
+    archivesName = "Android_SerialDriver-${android.defaultConfig.versionName}"
 }
 
 //apply from: 'publishToMavenLocal.gradle'
@@ -121,21 +126,20 @@ android {
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
-    implementation 'androidx.annotation:annotation:1.4.0'
+    implementation 'androidx.annotation:annotation:1.11.0'
 }
 
 afterEvaluate {
     publishing {
         publications {
-            // Creates a Maven publication called "release".
+            // register가 아닌 'release(MavenPublication)' 형태로 선언합니다.
             release(MavenPublication) {
-                // Applies the component for the release build variant.
+                // components["release"]가 아니라 components.release로 가져옵니다.
                 from components.release
 
-                // You can then customize attributes of the publication as shown below.
                 groupId = 'com.github.astroluj'
                 artifactId = 'Android_USB-TTY_Serial_Driver'
-                version = '1.0.12'
+                version = '1.0.17'
             }
         }
     }
